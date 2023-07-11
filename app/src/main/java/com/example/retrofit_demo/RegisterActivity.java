@@ -1,5 +1,7 @@
 package com.example.retrofit_demo;
 
+import static com.example.retrofit_demo.LoginActivity.editor;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
                         {
                             if (response.body().getResult() == 1) {
                                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                editor.putInt("login",1);
+                                editor.commit();
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(RegisterActivity.this, "New Account Created SuccessFully", Toast.LENGTH_LONG).show();

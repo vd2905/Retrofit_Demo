@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     public static SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

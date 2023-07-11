@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.ActivityNavigatorDestinationBuilderKt;
 
 import com.example.retrofit_demo.LoginActivity;
 import com.example.retrofit_demo.R;
@@ -36,10 +37,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Add_Product_Fragment extends Fragment {
-    private static final int SELECT_PICTURE = 10000;
     ImageView imageView;
     EditText fname, fstock, fprice, fcategory;
     TextView submit;
+    private ActivityNavigatorDestinationBuilderKt CropImage;
 
     @Nullable
     @Override
@@ -66,45 +67,45 @@ public class Add_Product_Fragment extends Fragment {
 
                 Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, stream);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
                 String imagedata = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                {
-                    imagedata = Base64.getEncoder().encodeToString(stream.toByteArray());
-                }
-                else
-                {
-                    imagedata = android.util.Base64.encodeToString(stream.toByteArray(), android.util.Base64.DEFAULT);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    imagedata = Base64.getEncoder().encodeToString(byteArray);
                 }
 
                 addfragment(new Home_Fragment());
-                Instance_class.Callapi().addproduct(LoginActivity.preferences.getInt("sellerid",0),fname.getText().toString(),fstock.getText().toString(),fprice.getText().toString(),fcategory.getText().toString(),imagedata).enqueue(new Callback<Add_Product_Class>() {
-                    @Override
-                    public void onResponse(Call<Add_Product_Class> call, Response<Add_Product_Class> response) {
-                        if(response.body().getConnection()==1)
-                        {
-                            if(response.body().getProductadd()==1)
+
+                if(LoginActivity.preferences.getString("from",null).equals("add"))
+                {
+                    Instance_class.Callapi().addproduct(LoginActivity.preferences.getInt("sellerid",0),fname.getText().toString(),fstock.getText().toString(),fprice.getText().toString(),fcategory.getText().toString(),imagedata).enqueue(new Callback<Add_Product_Class>() {
+                        @Override
+                        public void onResponse(Call<Add_Product_Class> call, Response<Add_Product_Class> response) {
+                            if(response.body().getConnection()==1)
                             {
-                                Toast.makeText(getContext(), "Product Add Successfully", Toast.LENGTH_LONG).show();
-                            }else
+                                if(response.body().getProductadd()==1)
+                                {
+                                    Toast.makeText(getContext(), "Product Add Successfully", Toast.LENGTH_LONG).show();
+                                }else
+                                {
+                                    Toast.makeText(getContext(), "Failed to Add Product", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else
                             {
-                                Toast.makeText(getContext(), "Failed to Add Product", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
                             }
                         }
-                        else
+
+                        @Override
+                        public void onFailure(Call<Add_Product_Class> call, Throwable t)
                         {
-                            Toast.makeText(getContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
+                            Log.d("TTT", "onFailure: off = "+t.getLocalizedMessage());
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Add_Product_Class> call, Throwable t)
-                    {
-                        Log.d("TTT", "onFailure: off = "+t.getLocalizedMessage());
-                    }
-
-                });
+                    });
+                }
             }
         });
         return view;
@@ -116,42 +117,23 @@ public class Add_Product_Fragment extends Fragment {
         transaction.replace(R.id.framlayout,fragment);
         transaction.commit();
     }
-
-    void imageChooser() {
-/////////////111111111111
-//        // create an instance of the
-//        // intent of the type image
-//        Intent i = new Intent();
-//        i.setType("image/*");
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//
-//        // pass the constant to compare it
-//        // with the returned requestCode
-//        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-
-
-        ////////////////22222
-
+    void imageChooser()
+    {
         CropImage.activity()
-                .start(getContext(), this);
-
-
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK)
-        {
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri)
-                {
-                    imageView.setImageURI(selectedImageUri);
-                }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                imageView.setImageURI(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
         }
-
     }
-
 }
