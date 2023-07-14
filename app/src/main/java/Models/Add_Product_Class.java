@@ -4,11 +4,11 @@ package Models;
 
 public class Add_Product_Class {
     private Integer connection;
-    private Integer productadd;
+    private Integer productaddd;
 
-    public Add_Product_Class(Integer connection, Integer productadd) {
+    public Add_Product_Class(Integer connection, Integer productaddd) {
         this.connection = connection;
-        this.productadd = productadd;
+        this.productaddd = productaddd;
     }
 
     public Integer getConnection() {
@@ -19,19 +19,19 @@ public class Add_Product_Class {
         this.connection = connection;
     }
 
-    public Integer getProductadd() {
-        return productadd;
+    public Integer getProductaddd() {
+        return productaddd;
     }
 
-    public void setProductadd(Integer productadd) {
-        this.productadd = productadd;
+    public void setProductaddd(Integer productaddd) {
+        this.productaddd = productaddd;
     }
 
     @Override
     public String toString() {
         return "Add_Product_Class{" +
                 "connection=" + connection +
-                ", productadd=" + productadd +
+                ", productaddd=" + productaddd +
                 '}';
     }
 }

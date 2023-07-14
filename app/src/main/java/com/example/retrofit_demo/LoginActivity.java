@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putInt("sellerid",response.body().getUserdata().getId());
                                 editor.putString("sellername",response.body().getUserdata().getName());
                                 editor.putString("selleremail",response.body().getUserdata().getEmail());
+                                editor.commit();
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(LoginActivity.this, "Log In SuccessFully", Toast.LENGTH_LONG).show();

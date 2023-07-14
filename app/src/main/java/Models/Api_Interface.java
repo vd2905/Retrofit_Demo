@@ -20,7 +20,14 @@ public interface Api_Interface
     Call<Add_Product_Class> addproduct(@Field("sellerid") int sellerid, @Field("name") String name, @Field("stock") String stock, @Field("price") String price, @Field("category") String category, @Field("productimage") String imagedata);
 
     @FormUrlEncoded
-    @POST
-    Call<View_Product_Class> viewproduct(@Field("id") int id,@Field("sellerid") int sellerid,@Field("name") String name,@Field("stock") int stock,@Field("price") int price,@Field("category") String category,@Field("image") String image);
+    @POST("viewProduct.php")
+    Call<View_Product_Class> viewproduct(@Field("sellerid") int sellerid);
 
+    @FormUrlEncoded
+    @POST("updateproduct.php")
+    Call<Register_Class> updateproduct(@Field("sellerid") int sellerid, @Field("name") String name, @Field("stock") String stock, @Field("price") String price, @Field("category") String category, @Field("productimage") String imagedata);
+
+    @FormUrlEncoded
+    @POST("deleteproduct.php")
+    Call<Register_Class> deleteproduct(@Field("sellerid") int sellerid);
 }

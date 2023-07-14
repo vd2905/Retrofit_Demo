@@ -22,10 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ActivityNavigatorDestinationBuilderKt;
 
 import com.example.retrofit_demo.LoginActivity;
 import com.example.retrofit_demo.R;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -40,7 +40,6 @@ public class Add_Product_Fragment extends Fragment {
     ImageView imageView;
     EditText fname, fstock, fprice, fcategory;
     TextView submit;
-    private ActivityNavigatorDestinationBuilderKt CropImage;
 
     @Nullable
     @Override
@@ -84,7 +83,54 @@ public class Add_Product_Fragment extends Fragment {
                         public void onResponse(Call<Add_Product_Class> call, Response<Add_Product_Class> response) {
                             if(response.body().getConnection()==1)
                             {
-                                if(response.body().getProductadd()==1)
+                                if(response.body().getProductaddd()==1)
+                                {
+                                    Toast.makeText(getContext(), "Product Add Successfully", Toast.LENGTH_LONG).show();
+                                }else
+                                {
+                                    Toast.makeText(getContext(), "Failed to Add Product", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Add_Product_Class> call, Throwable t)
+                        {
+                            Log.d("TTT", "onFailure: off = "+t.getLocalizedMessage());
+                        }
+
+                    });
+                }
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                String imagedata = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    imagedata = Base64.getEncoder().encodeToString(byteArray);
+                }
+
+                addfragment(new Home_Fragment());
+
+                if(LoginActivity.preferences.getString("from",null).equals("add"))
+                {
+                    Instance_class.Callapi().addproduct(LoginActivity.preferences.getInt("sellerid",0),fname.getText().toString(),fstock.getText().toString(),fprice.getText().toString(),fcategory.getText().toString(),imagedata).enqueue(new Callback<Add_Product_Class>() {
+                        @Override
+                        public void onResponse(Call<Add_Product_Class> call, Response<Add_Product_Class> response) {
+                            if(response.body().getConnection()==1)
+                            {
+                                if(response.body().getProductaddd()==1)
                                 {
                                     Toast.makeText(getContext(), "Product Add Successfully", Toast.LENGTH_LONG).show();
                                 }else
@@ -117,11 +163,10 @@ public class Add_Product_Fragment extends Fragment {
         transaction.replace(R.id.framlayout,fragment);
         transaction.commit();
     }
-    void imageChooser()
+    public void imageChooser()
     {
         CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
+                .start(getContext(),this);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -136,4 +181,5 @@ public class Add_Product_Fragment extends Fragment {
             }
         }
     }
+
 }
