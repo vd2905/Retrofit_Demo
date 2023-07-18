@@ -1,9 +1,15 @@
-
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Add_Product_Class {
+
+    @SerializedName("connection")
+    @Expose
     private Integer connection;
+    @SerializedName("productaddd")
+    @Expose
     private Integer productaddd;
 
     public Add_Product_Class(Integer connection, Integer productaddd) {

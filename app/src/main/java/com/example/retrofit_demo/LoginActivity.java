@@ -1,7 +1,8 @@
 package com.example.retrofit_demo;
 
+import static com.example.retrofit_demo.Splash_Activity.editor;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +21,6 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
-    public static SharedPreferences preferences;
-    static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +29,6 @@ public class LoginActivity extends AppCompatActivity {
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        preferences = getSharedPreferences("mypref",MODE_PRIVATE);
-        editor=preferences.edit();
 
         binding.signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,15 +41,16 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.body().getResult() == 1) {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 editor.putInt("login",1);
-                                editor.putInt("sellerid",response.body().getUserdata().getId());
-                                editor.putString("sellername",response.body().getUserdata().getName());
-                                editor.putString("selleremail",response.body().getUserdata().getEmail());
+                                editor.putInt("uid", Integer.parseInt(response.body().getUserdata().getId()));
+                                editor.putString("name",response.body().getUserdata().getName());
+                                editor.putString("email",response.body().getUserdata().getEmail());
                                 editor.commit();
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(LoginActivity.this, "Log In SuccessFully", Toast.LENGTH_LONG).show();
                             }
-                            if (response.body().getResult() == 0) {
+                            else
+                            {
                                 Toast.makeText(LoginActivity.this, "User Not Found!!!", Toast.LENGTH_LONG).show();
                             }
                         }

@@ -1,24 +1,35 @@
 package Models;
 
-public class UserData
-{
-    private int id;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Userdata {
+
+    @SerializedName("ID")
+    @Expose
+    private String id;
+    @SerializedName("NAME")
+    @Expose
     private String name;
+    @SerializedName("EMAIL")
+    @Expose
     private String email;
+    @SerializedName("PASSWORD")
+    @Expose
     private String password;
 
-    public UserData(int id, String name, String email, String password) {
+    public Userdata(String id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,8 +59,8 @@ public class UserData
 
     @Override
     public String toString() {
-        return "UserData{" +
-                "id=" + id +
+        return "Userdata{" +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

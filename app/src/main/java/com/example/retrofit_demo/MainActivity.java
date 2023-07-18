@@ -1,6 +1,6 @@
 package com.example.retrofit_demo;
 
-import static com.example.retrofit_demo.LoginActivity.preferences;
+import static com.example.retrofit_demo.Splash_Activity.preferences;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,15 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        addfragment(new Home_Fragment());
 
         View headerview = binding.navigationView.getHeaderView(0);
         headerimage = headerview.findViewById(R.id.headerimage);
         headername = headerview.findViewById(R.id.headername);
         headeremail = headerview.findViewById(R.id.headeremail);
 
-        headername.setText(preferences.getString("sellername",null));
-        headeremail.setText(preferences.getString("selleremail",null));
+        headername.setText(preferences.getString("name",null));
+        headeremail.setText(preferences.getString("email",null));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(MainActivity.this,binding.drawerlayout,binding.appbarMain.toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         binding.drawerlayout.addDrawerListener(toggle);
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(item.getItemId()==R.id.addproduct)
                 {
-                    LoginActivity.editor.putString("from","add");
-                    LoginActivity.editor.commit();
+                    Splash_Activity.editor.putString("from","add");
+                    Splash_Activity.editor.commit();
                     addfragment(new Add_Product_Fragment());
                     binding.drawerlayout.close();
                 }
@@ -79,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     };
-
-
     private void addfragment(Fragment fragment)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();

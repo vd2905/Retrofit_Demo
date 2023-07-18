@@ -1,14 +1,21 @@
-
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Login_Class {
 
+    @SerializedName("connection")
+    @Expose
     private Integer connection;
+    @SerializedName("result")
+    @Expose
     private Integer result;
-    private UserData userdata;
+    @SerializedName("userdata")
+    @Expose
+    private Userdata userdata;
 
-    public Login_Class(Integer connection, Integer result, UserData userdata) {
+    public Login_Class(Integer connection, Integer result, Userdata userdata) {
         this.connection = connection;
         this.result = result;
         this.userdata = userdata;
@@ -30,11 +37,11 @@ public class Login_Class {
         this.result = result;
     }
 
-    public UserData getUserdata() {
+    public Userdata getUserdata() {
         return userdata;
     }
 
-    public void setUserdata(UserData userdata) {
+    public void setUserdata(Userdata userdata) {
         this.userdata = userdata;
     }
 

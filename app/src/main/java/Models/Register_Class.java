@@ -1,8 +1,15 @@
 package Models;
 
-public class Register_Class
-{
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Register_Class {
+
+    @SerializedName("connection")
+    @Expose
     private Integer connection;
+    @SerializedName("result")
+    @Expose
     private Integer result;
 
     public Register_Class(Integer connection, Integer result) {

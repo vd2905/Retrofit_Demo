@@ -3,14 +3,14 @@ package Models;
 
 public class ProductData {
     private int id;
-    private int sellerid;
+    private String sellerid;
     private String name;
     private String stock;
     private String price;
     private String category;
     private String image;
 
-    public ProductData(int id, int sellerid, String name, String stock, String price, String category, String image) {
+    public ProductData(int id, String sellerid, String name, String stock, String price, String category, String image) {
         this.id = id;
         this.sellerid = sellerid;
         this.name = name;
@@ -28,11 +28,11 @@ public class ProductData {
         this.id = id;
     }
 
-    public int getSellerid() {
+    public String getSellerid() {
         return sellerid;
     }
 
-    public void setSellerid(int sellerid) {
+    public void setSellerid(String sellerid) {
         this.sellerid = sellerid;
     }
 
@@ -80,7 +80,7 @@ public class ProductData {
     public String toString() {
         return "ProductData{" +
                 "id=" + id +
-                ", sellerid=" + sellerid +
+                ", sellerid='" + sellerid + '\'' +
                 ", name='" + name + '\'' +
                 ", stock='" + stock + '\'' +
                 ", price='" + price + '\'' +
