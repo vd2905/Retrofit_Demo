@@ -1,15 +1,23 @@
 package Models;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 
 public class View_Product_Class {
 
+    @SerializedName("connection")
+    @Expose
     private Integer connection;
+    @SerializedName("result")
+    @Expose
     private Integer result;
-    private List<ProductData> productdata;
+    @SerializedName("productdata")
+    @Expose
+    private List<Productdatum> productdata;
 
-    public View_Product_Class(Integer connection, Integer result, List<ProductData> productdata) {
+    public View_Product_Class(Integer connection, Integer result, List<Productdatum> productdata) {
         this.connection = connection;
         this.result = result;
         this.productdata = productdata;
@@ -31,11 +39,11 @@ public class View_Product_Class {
         this.result = result;
     }
 
-    public List<ProductData> getProductdata() {
+    public List<Productdatum> getProductdata() {
         return productdata;
     }
 
-    public void setProductdata(List<ProductData> productdata) {
+    public void setProductdata(List<Productdatum> productdata) {
         this.productdata = productdata;
     }
 

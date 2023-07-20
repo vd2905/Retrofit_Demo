@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class View_Product_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_fragment, container, false);
 
-        Instance_class.Callapi().viewproduct(Splash_Activity.preferences.getInt("id", 0)).enqueue(new Callback<View_Product_Class>() {
+        Instance_class.Callapi().viewproduct(Splash_Activity.preferences.getInt("uid", 0)).enqueue(new Callback<View_Product_Class>() {
             @Override
             public void onResponse(Call<View_Product_Class> call, Response<View_Product_Class> response) {
                 adapter = new ViewAdapter(View_Product_Fragment.this, response.body().getProductdata());
@@ -41,8 +42,9 @@ public class View_Product_Fragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<View_Product_Class> call, Throwable t) {
-
+            public void onFailure(Call<View_Product_Class> call, Throwable t)
+            {
+                Log.d("TTT", "onFailure: off = "+t.getLocalizedMessage());
             }
         });
 

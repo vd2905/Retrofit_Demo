@@ -16,7 +16,7 @@ public class Splash_Activity extends AppCompatActivity
     ImageView imageView;
     Runnable runnable;
     public static SharedPreferences preferences;
-    static SharedPreferences.Editor editor;
+    public static SharedPreferences.Editor editor;
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

@@ -21,10 +21,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.retrofit_demo.MainActivity;
 import com.example.retrofit_demo.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -63,6 +63,19 @@ public class Add_Product_Fragment extends Fragment {
             }
         });
 
+        if(from.equals("update"))
+        {
+            Glide.with(Add_Product_Fragment.this)
+                    .load("https://darshanvarsani.000webhostapp.com/MySite/"+preferences.getString("pimage",null))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imageView);
+            fname.setText(preferences.getString("pname",null));
+            fstock.setText(preferences.getString("pstock",null));
+            fprice.setText(preferences.getString("pprice",null));
+            fcategory.setText(preferences.getString("pcategory",null));
+        }
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,8 +90,6 @@ public class Add_Product_Fragment extends Fragment {
                     imagedata = Base64.getEncoder().encodeToString(byteArray);
                 }
 
-                addfragment(new View_Product_Fragment());
-
                 if(from.equals("add"))
                 {
                     Instance_class.Callapi().addproduct(preferences.getInt("uid",0),fname.getText().toString(),fstock.getText().toString(),fprice.getText().toString(),fcategory.getText().toString(),imagedata).enqueue(new Callback<Add_Product_Class>() {
@@ -88,6 +99,8 @@ public class Add_Product_Fragment extends Fragment {
                             {
                                 if(response.body().getProductaddd()==1)
                                 {
+                                    Intent intent = new Intent(getContext(),MainActivity.class);
+                                    startActivity(intent);
                                     Toast.makeText(getContext(), "Product Add Successfully", Toast.LENGTH_LONG).show();
                                 }else
                                 {
@@ -110,18 +123,15 @@ public class Add_Product_Fragment extends Fragment {
                 }
                 if(from.equals("update"))
                 {
-                    Glide.with(Add_Product_Fragment.this).load("https://darshanvarsani.000webhostapp.com/MySite/"+preferences.getString("pimage",null)).into(imageView);
-                    fname.setText(preferences.getString("pname",null));
-                    fstock.setText(preferences.getString("pstock",null));
-                    fprice.setText(preferences.getString("pprice",null));
-                    fcategory.setText(preferences.getString("pcategory",null));
-                    Instance_class.Callapi().updateproduct(preferences.getString("pname",null), preferences.getString("pprice",null), preferences.getString("pstock",null), preferences.getString("pcategory",null),preferences.getString("pid",null)).enqueue(new Callback<Register_Class>() {
+                    Instance_class.Callapi().updateproduct(fname.getText().toString(),fstock.getText().toString(),fprice.getText().toString(),fcategory.getText().toString(),imagedata,preferences.getString("pid",null)).enqueue(new Callback<Register_Class>() {
                         @Override
                         public void onResponse(Call<Register_Class> call, Response<Register_Class> response) {
                             if(response.body().getConnection()==1)
                             {
                                 if(response.body().getConnection()==1)
                                 {
+                                    Intent intent = new Intent(getContext(),MainActivity.class);
+                                    startActivity(intent);
                                     Log.d("RRR", "onResponse: update result = "+response.body().getResult());
                                     Toast.makeText(getContext(), "Update pref", Toast.LENGTH_LONG).show();
                                 }
@@ -139,13 +149,6 @@ public class Add_Product_Fragment extends Fragment {
             }
         });
         return view;
-    }
-    private void addfragment(Fragment fragment)
-    {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.framlayout,fragment);
-        transaction.commit();
     }
     public void imageChooser()
     {
