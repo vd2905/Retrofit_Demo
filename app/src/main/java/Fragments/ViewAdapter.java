@@ -21,11 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.retrofit_demo.PaymentActivity;
 import com.example.retrofit_demo.R;
 
 import java.util.List;
 
-import Models.Add_Product_Class;
 import Models.Instance_class;
 import Models.Productdatum;
 import Models.Register_Class;
@@ -147,6 +147,16 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewHolder>
             price=itemView.findViewById(R.id.in_re_price);
             category=itemView.findViewById(R.id.in_re_category);
             menuoption=itemView.findViewById(R.id.menuoption);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Intent intent = new Intent(view_product_fragment.getContext(), PaymentActivity.class);
+                    view_product_fragment.startActivity(intent);
+
+                    return true;
+                }
+            });
         }
     }
 }
